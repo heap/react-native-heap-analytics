@@ -19,6 +19,7 @@ export default Package.create({
   nativeModule: NativeModules.RNHeap,
   enabled: Platform.select({
     ios: true,
+    android: true
   }),
   export: (Heap) => ({
     // App Properties
