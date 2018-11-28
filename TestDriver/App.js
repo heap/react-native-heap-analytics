@@ -6,6 +6,8 @@ import Heap from "react-native-heap-analytics";
 export default class App extends Component {
   componentDidMount() {
     Heap.setAppId("2084764307");
+    Heap.identify("foo");
+    console.log("Heap App ID set");
   }
 
   render() {
@@ -18,6 +20,7 @@ export default class App extends Component {
 
   sendEvent = () => {
     Heap.track("manual_button_pressed", { foo: "bar" });
+    console.log("Manual tracking event sent");
   };
 }
 
