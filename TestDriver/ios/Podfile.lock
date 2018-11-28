@@ -6,11 +6,11 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - Heap (4.0.0)
+  - Heap (5.0.8)
   - React (0.57.5):
     - React/Core (= 0.57.5)
   - react-native-heap-analytics (2.4.0):
-    - Heap (= 4.0.0)
+    - Heap (= 5.0.8)
     - React
   - React/Core (0.57.5):
     - yoga (= 0.57.5.React)
@@ -103,9 +103,9 @@ SPEC CHECKSUMS:
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   Folly: c89ac2d5c6ab169cd7397ef27485c44f35f742c7
   glog: e8acf0ebbf99759d3ff18c86c292a5898282dcde
-  Heap: 9ef15407ea1893c3af40a13bb4f4a450ec8af142
+  Heap: ab8cc187dca26a0e20e4388fb3085f585384afee
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
-  react-native-heap-analytics: b9f69b6c5a88c7482b034811c984a080aef4ac61
+  react-native-heap-analytics: 412bdec10b3dcf717056ff5334fced6c8aea730c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
 PODFILE CHECKSUM: 563229dac4acb50c4a54c913715f7f32a78069cc
