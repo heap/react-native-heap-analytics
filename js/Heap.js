@@ -1,7 +1,6 @@
 // Libraries
-import {NativeModules, Platform} from 'react-native';
-import Package from 'react-native-package';
-
+import { NativeModules, Platform } from "react-native";
+import Package from "react-native-package";
 
 /**
  * Package.create handles two things:
@@ -15,30 +14,36 @@ import Package from 'react-native-package';
  * https://github.com/negativetwelve/react-native-package
  */
 export default Package.create({
-  json: require('../package.json'),
+  json: require("../package.json"),
   nativeModule: NativeModules.RNHeap,
   enabled: Platform.select({
     ios: true,
     android: true
   }),
-  export: (Heap) => ({
+  export: Heap => ({
     // App Properties
-    setAppId: (appId) => Heap.setAppId(appId),
+    setAppId: appId => Heap.setAppId(appId),
 
     // User Properties
-    identify: (identity) => Heap.identify(identity),
-    addUserProperties: (properties) => Heap.addUserProperties(properties),
+    identify: identity => Heap.identify(identity),
+    addUserProperties: properties => Heap.addUserProperties(properties),
 
     // Event Properties
-    addEventProperties: (properties) => Heap.addEventProperties(properties),
-    removeEventProperty: (property) => Heap.removeEventProperty(property),
+    addEventProperties: properties => Heap.addEventProperties(properties),
+    removeEventProperty: property => Heap.removeEventProperty(property),
     clearEventProperties: () => Heap.clearEventProperties(),
 
     // Events
     track: (event, payload) => Heap.track(event, payload),
 
+    // Redux middleware
+    reduxMiddleware: store => next => action => {
+      Heap.track(`ACTION_${action.type}`, action);
+      next(action);
+    },
+
     // Config
     enableVisualizer: () => Heap.enableVisualizer(),
-    changeInterval: (interval) => Heap.changeInterval(interval),
-  }),
+    changeInterval: interval => Heap.changeInterval(interval)
+  })
 });

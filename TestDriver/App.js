@@ -1,34 +1,14 @@
-import React, { Component } from "react";
-import { Button, StyleSheet, View } from "react-native";
+import React from "react";
+import { Provider } from "react-redux";
+import { store } from "./src/reduxElements";
+import MainScreen from "./src/mainScreen";
 
-import Heap from "react-native-heap-analytics";
-
-export default class App extends Component {
-  componentDidMount() {
-    Heap.setAppId("2084764307");
-    Heap.identify("foo");
-    console.log("Heap App ID set");
-  }
-
+export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Button title="Send Manual Event" onPress={this.sendEvent} />
-      </View>
+      <Provider store={store}>
+        <MainScreen />
+      </Provider>
     );
   }
-
-  sendEvent = () => {
-    Heap.track("manual_button_pressed", { foo: "bar" });
-    console.log("Manual tracking event sent");
-  };
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  }
-});
