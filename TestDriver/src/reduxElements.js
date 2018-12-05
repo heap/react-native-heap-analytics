@@ -11,7 +11,13 @@ const DECREMENT = "DECREMENT";
 export const incrementAction = amount => {
   return {
     type: INCREMENT,
-    amount: amount
+    amount: amount,
+    sampleNestedObject: {
+      nested: true,
+      secondLevel: {
+        alsoNested: "absolutely"
+      }
+    }
   };
 };
 

@@ -2,6 +2,8 @@
 import { NativeModules, Platform } from "react-native";
 import Package from "react-native-package";
 
+let flatten = require("flat");
+
 /**
  * Package.create handles two things:
  *
@@ -38,7 +40,7 @@ export default Package.create({
 
     // Redux middleware
     reduxMiddleware: store => next => action => {
-      Heap.track(`ACTION_${action.type}`, action);
+      Heap.track("Redux Action", flatten(action));
       next(action);
     },
 
