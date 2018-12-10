@@ -25,10 +25,6 @@ RCT_EXPORT_METHOD(setAppId:(NSString *)appId) {
   [Heap setAppId:appId];
 }
 
-RCT_EXPORT_METHOD(enableVisualizer) {
-  [Heap enableVisualizer];
-}
-
 RCT_EXPORT_METHOD(track:(NSString *)event withProperties:(NSDictionary *)properties) {
     // The Heap library requires that a "page view" event be sent first, since properties
     // will get copied down to manual events.  Unfortunately, the first page view happens
@@ -66,10 +62,6 @@ RCT_EXPORT_METHOD(removeEventProperty:(NSString *)property) {
 
 RCT_EXPORT_METHOD(clearEventProperties) {
   [Heap clearEventProperties];
-}
-
-RCT_EXPORT_METHOD(changeInterval:(double)interval) {
-  [Heap changeInterval:interval];
 }
 
 @end

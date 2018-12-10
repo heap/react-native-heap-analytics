@@ -42,10 +42,6 @@ export default Package.create({
     reduxMiddleware: store => next => action => {
       Heap.track("Redux Action", flatten(action));
       next(action);
-    },
-
-    // Config
-    enableVisualizer: () => Heap.enableVisualizer(),
-    changeInterval: interval => Heap.changeInterval(interval)
+    }
   })
 });

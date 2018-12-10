@@ -107,14 +107,4 @@ public class RNHeapLibraryModule extends ReactContextBaseJavaModule {
   public void track(String event, ReadableMap payload) {
     Heap.track(event, RNHeapLibraryModule.convertToStringMap(payload));
   }
-
-  @ReactMethod
-  public void enableVisualizer() {
-    //FIXME: this is a noop for now, just so that we expose the methods used by the js
-  }
-
-  @ReactMethod
-  public void changeInterval(Double interval) {
-    //FIXME: this is a noop for now, just so that we expose the methods used by the js
-  }
 }
