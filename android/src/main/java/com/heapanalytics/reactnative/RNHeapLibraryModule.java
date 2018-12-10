@@ -1,5 +1,7 @@
 package com.heapanalytics.reactnative;
 
+import android.text.TextUtils;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -9,7 +11,9 @@ import com.heapanalytics.android.Heap;
 import com.heapanalytics.android.internal.HeapImpl;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RNHeapLibraryModule extends ReactContextBaseJavaModule {
@@ -53,7 +57,33 @@ public class RNHeapLibraryModule extends ReactContextBaseJavaModule {
     ReadableMapKeySetIterator mapIterator = readableMap.keySetIterator();
     while (mapIterator.hasNextKey()) {
       String key = mapIterator.nextKey();
-      stringMap.put(key, readableMap.getString(key));
+      switch (readableMap.getType(key)) {
+        case Null:
+          stringMap.put(key, null);
+          break;
+        case Number:
+          stringMap.put(key, "" + readableMap.getDouble(key));
+          break;
+        case Boolean:
+          stringMap.put(key, readableMap.getBoolean(key) ? "true" : "false");
+          break;
+        case String:
+          stringMap.put(key, readableMap.getString(key));
+          break;
+        case Array:
+          List<Object> list = readableMap.getArray(key).toArrayList();
+          List<String> stringList = new ArrayList<>();
+          for (Object o : list) {
+            stringList.add(o.toString());
+          }
+          stringMap.put(key, TextUtils.join(",", stringList));
+          break;
+        case Map:
+          // In many cases, this won't get used, since we flatten incoming
+          // objects before they get to this point.
+          stringMap.put(key, readableMap.getMap(key).toHashMap().toString());
+          break;
+      }
     }
     return stringMap;
   }
