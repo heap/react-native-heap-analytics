@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { connect } from 'react-redux';
 
-import Heap from "react-native-heap-analytics";
-import { incrementAction, decrementAction } from "./reduxElements";
+import Heap from 'react-native-heap-analytics';
+import { incrementAction, decrementAction } from './reduxElements';
 
 class MainScreen extends Component {
   componentDidMount() {
-    Heap.setAppId("2084764307");
-    Heap.identify("foo");
-    console.log("Heap App ID set");
+    Heap.setAppId('2084764307');
+    Heap.identify('foo');
+    console.log('Heap App ID set');
   }
 
   render() {
@@ -24,8 +24,8 @@ class MainScreen extends Component {
   }
 
   sendManualEvent = () => {
-    Heap.track("manual_button_pressed", { foo: "bar" });
-    console.log("Manual tracking event sent");
+    Heap.track('manual_button_pressed', { foo: 'bar' });
+    console.log('Manual tracking event sent');
   };
 }
 
@@ -36,7 +36,7 @@ export default connect(
   dispatch => {
     return {
       onIncrement: amount => dispatch(incrementAction(amount)),
-      onDecrement: amount => dispatch(decrementAction(amount))
+      onDecrement: amount => dispatch(decrementAction(amount)),
     };
   }
 )(MainScreen);
@@ -44,8 +44,8 @@ export default connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  }
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
 });

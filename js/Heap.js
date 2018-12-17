@@ -1,8 +1,8 @@
 // Libraries
-import { NativeModules, Platform } from "react-native";
-import Package from "react-native-package";
+import { NativeModules, Platform } from 'react-native';
+import Package from 'react-native-package';
 
-let flatten = require("flat");
+let flatten = require('flat');
 
 /**
  * Package.create handles two things:
@@ -16,11 +16,11 @@ let flatten = require("flat");
  * https://github.com/negativetwelve/react-native-package
  */
 export default Package.create({
-  json: require("../package.json"),
+  json: require('../package.json'),
   nativeModule: NativeModules.RNHeap,
   enabled: Platform.select({
     ios: true,
-    android: true
+    android: true,
   }),
   export: Heap => ({
     // App Properties
@@ -40,8 +40,8 @@ export default Package.create({
 
     // Redux middleware
     reduxMiddleware: store => next => action => {
-      Heap.track("Redux Action", flatten(action));
+      Heap.track('Redux Action', flatten(action));
       next(action);
-    }
-  })
+    },
+  }),
 });

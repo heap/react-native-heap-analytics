@@ -1,49 +1,50 @@
-import Heap from "react-native-heap-analytics";
-import { applyMiddleware, createStore } from "redux";
+import Heap from 'react-native-heap-analytics';
+import { applyMiddleware, createStore } from 'redux';
 
 // Action Types
 
-const INCREMENT = "INCREMENT";
-const DECREMENT = "DECREMENT";
+const INCREMENT = 'INCREMENT';
+const DECREMENT = 'DECREMENT';
 
 // Actions
 
-export const incrementAction = amount => {
+const incrementAction = amount => {
   return {
     type: INCREMENT,
     amount: amount,
     sampleNestedObject: {
       nested: true,
       secondLevel: {
-        alsoNested: "absolutely"
-      }
-    }
+        alsoNested: 'absolutely',
+      },
+    },
   };
 };
 
-export const decrementAction = amount => {
+const decrementAction = amount => {
   return {
     type: DECREMENT,
-    amount: amount
+    amount: amount,
   };
 };
 
 // Reducer
+
 const initialState = {
-  value: 0
+  value: 0,
 };
 
-export const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case INCREMENT:
       return {
         ...state,
-        value: state.value + action.amount
+        value: state.value + action.amount,
       };
     case DECREMENT:
       return {
         ...state,
-        value: state.value - action.amount
+        value: state.value - action.amount,
       };
   }
   return state;
@@ -51,7 +52,6 @@ export const reducer = (state = initialState, action) => {
 
 // Store
 
-export const store = createStore(
-  reducer,
-  applyMiddleware(Heap.reduxMiddleware)
-);
+const store = createStore(reducer, applyMiddleware(Heap.reduxMiddleware));
+
+export { incrementAction, decrementAction, reducer, store };
