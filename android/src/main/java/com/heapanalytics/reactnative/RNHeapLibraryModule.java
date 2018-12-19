@@ -104,6 +104,11 @@ public class RNHeapLibraryModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void removeEventProperty(String property) {
+    Heap.removeEventProperty(property);
+  }
+
+  @ReactMethod
   public void track(String event, ReadableMap payload) {
     Heap.track(event, RNHeapLibraryModule.convertToStringMap(payload));
   }
