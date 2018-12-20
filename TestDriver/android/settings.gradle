@@ -1,7 +1,0 @@
-AddrootProject.name = 'TestDriver'
-
-include ':app'
-
-include ':react-native-heap'
-project(':react-native-heap').projectDir =
-    new File(rootProject.projectDir, '../node_modules/@heap/react-native-heap/android')
