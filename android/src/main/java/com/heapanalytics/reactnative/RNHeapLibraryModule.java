@@ -8,7 +8,6 @@ import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.heapanalytics.android.Heap;
 import com.heapanalytics.android.internal.HeapImpl;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,18 +27,7 @@ public class RNHeapLibraryModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void setAppId(String appId) {
-    try {
-      Field skipInstrumentorCheckField = HeapImpl.class.getDeclaredField("skipInstrumentorChecks");
-      skipInstrumentorCheckField.setAccessible(true);
-      skipInstrumentorCheckField.setBoolean(null, true);
-    } catch (NoSuchFieldException e) {
-      android.util.Log.e("InstrumentorCheck",
-              "Caught NoSuchFieldException when trying to skip the instrumentor checks", e);
-    } catch (IllegalAccessException e) {
-      android.util.Log.e("InstrumentorCheck",
-              "Caught IllegalAccessException when trying to skip the instrumentor checks", e);
-    }
-
+    HeapImpl.skipInstrumentorChecks = true;
     Heap.init(this.reactContext, appId);
   }
 
