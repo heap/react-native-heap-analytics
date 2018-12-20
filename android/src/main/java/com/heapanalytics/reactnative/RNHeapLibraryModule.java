@@ -1,7 +1,5 @@
 package com.heapanalytics.reactnative;
 
-import android.text.TextUtils;
-
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -11,9 +9,7 @@ import com.heapanalytics.android.Heap;
 import com.heapanalytics.android.internal.HeapImpl;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RNHeapLibraryModule extends ReactContextBaseJavaModule {
@@ -37,11 +33,11 @@ public class RNHeapLibraryModule extends ReactContextBaseJavaModule {
       skipInstrumentorCheckField.setAccessible(true);
       skipInstrumentorCheckField.setBoolean(null, true);
     } catch (NoSuchFieldException e) {
-      System.out.println("Caught NoSuchFieldException when trying to skip the instrumentor checks");
-      e.printStackTrace();
+      android.util.Log.e("InstrumentorCheck",
+              "Caught NoSuchFieldException when trying to skip the instrumentor checks", e);
     } catch (IllegalAccessException e) {
-      System.out.println("Caught IllegalAccessException when trying to skip the instrumentor checks");
-      e.printStackTrace();
+      android.util.Log.e("InstrumentorCheck",
+              "Caught IllegalAccessException when trying to skip the instrumentor checks", e);
     }
 
     Heap.init(this.reactContext, appId);
@@ -62,27 +58,19 @@ public class RNHeapLibraryModule extends ReactContextBaseJavaModule {
           stringMap.put(key, null);
           break;
         case Number:
-          stringMap.put(key, "" + readableMap.getDouble(key));
+          stringMap.put(key, String.valueOf(readableMap.getDouble(key)));
           break;
         case Boolean:
-          stringMap.put(key, readableMap.getBoolean(key) ? "true" : "false");
+          stringMap.put(key, String.valueOf(readableMap.getBoolean(key)));
           break;
         case String:
           stringMap.put(key, readableMap.getString(key));
           break;
         case Array:
-          List<Object> list = readableMap.getArray(key).toArrayList();
-          List<String> stringList = new ArrayList<>();
-          for (Object o : list) {
-            stringList.add(o.toString());
-          }
-          stringMap.put(key, TextUtils.join(",", stringList));
-          break;
         case Map:
-          // In many cases, this won't get used, since we flatten incoming
-          // objects before they get to this point.
-          stringMap.put(key, readableMap.getMap(key).toHashMap().toString());
-          break;
+          // The JS bridge will flatten maps and arrays in a uniform manner across both platforms.
+          // If we get them at this point, we shouldn't continue.
+          throw new RNHeapException("Property objects must be flattened before being sent across the JS bridge.");
       }
     }
     return stringMap;
@@ -90,12 +78,12 @@ public class RNHeapLibraryModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void addUserProperties(ReadableMap properties) {
-    Heap.addUserProperties(RNHeapLibraryModule.convertToStringMap(properties));
+    Heap.addUserProperties(convertToStringMap(properties));
   }
 
   @ReactMethod
   public void addEventProperties(ReadableMap properties) {
-    Heap.addEventProperties(RNHeapLibraryModule.convertToStringMap(properties));
+    Heap.addEventProperties(convertToStringMap(properties));
   }
 
   @ReactMethod
@@ -110,6 +98,6 @@ public class RNHeapLibraryModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void track(String event, ReadableMap payload) {
-    Heap.track(event, RNHeapLibraryModule.convertToStringMap(payload));
+    Heap.track(event, convertToStringMap(payload));
   }
 }

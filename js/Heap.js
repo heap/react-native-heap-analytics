@@ -28,15 +28,17 @@ export default Package.create({
 
     // User Properties
     identify: identity => Heap.identify(identity),
-    addUserProperties: properties => Heap.addUserProperties(properties),
+    addUserProperties: properties =>
+      Heap.addUserProperties(flatten(properties)),
 
     // Event Properties
-    addEventProperties: properties => Heap.addEventProperties(properties),
+    addEventProperties: properties =>
+      Heap.addEventProperties(flatten(properties)),
     removeEventProperty: property => Heap.removeEventProperty(property),
     clearEventProperties: () => Heap.clearEventProperties(),
 
     // Events
-    track: (event, payload) => Heap.track(event, payload),
+    track: (event, payload) => Heap.track(event, flatten(payload)),
 
     // Redux middleware
     reduxMiddleware: store => next => action => {
