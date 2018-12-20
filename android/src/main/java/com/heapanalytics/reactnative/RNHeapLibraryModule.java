@@ -27,6 +27,10 @@ public class RNHeapLibraryModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void setAppId(String appId) {
+    // Currently, the Android tracker will refuse to initialize if it detects that
+    // the bytecode hasn't been instrumented for autotrack. Until we are ready
+    // to incorporate autotrack, instruct the Android tracker to skip those
+    // checks.
     HeapImpl.skipInstrumentorChecks = true;
     Heap.init(this.reactContext, appId);
   }
@@ -42,23 +46,24 @@ public class RNHeapLibraryModule extends ReactContextBaseJavaModule {
     while (mapIterator.hasNextKey()) {
       String key = mapIterator.nextKey();
       switch (readableMap.getType(key)) {
-        case Null:
-          stringMap.put(key, null);
-          break;
-        case Number:
-          stringMap.put(key, String.valueOf(readableMap.getDouble(key)));
-          break;
-        case Boolean:
-          stringMap.put(key, String.valueOf(readableMap.getBoolean(key)));
-          break;
-        case String:
-          stringMap.put(key, readableMap.getString(key));
-          break;
-        case Array:
-        case Map:
-          // The JS bridge will flatten maps and arrays in a uniform manner across both platforms.
-          // If we get them at this point, we shouldn't continue.
-          throw new RNHeapException("Property objects must be flattened before being sent across the JS bridge.");
+      case Null:
+        stringMap.put(key, null);
+        break;
+      case Number:
+        stringMap.put(key, String.valueOf(readableMap.getDouble(key)));
+        break;
+      case Boolean:
+        stringMap.put(key, String.valueOf(readableMap.getBoolean(key)));
+        break;
+      case String:
+        stringMap.put(key, readableMap.getString(key));
+        break;
+      case Array:
+      case Map:
+        // The JS bridge will flatten maps and arrays in a uniform manner across both
+        // platforms.
+        // If we get them at this point, we shouldn't continue.
+        throw new RNHeapException("Property objects must be flattened before being sent across the JS bridge.");
       }
     }
     return stringMap;
